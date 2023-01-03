@@ -42,13 +42,13 @@ public:
 	AWorldGenerator();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
-	int32 CountOfChunksX = 1;
+	int32 CountOfChunksX = 2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
-	int32 CountOfChunksY = 1;
+	int32 CountOfChunksY = 2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
-	float Amplitude = 500.;
+	float Amplitude = 500.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator, Category=Generator)
 	int32 BlockSize = 100;
@@ -60,7 +60,7 @@ public:
 	uint8 MaxHeight = 200;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin=3, UIMin=3, ClampMax=200, UIMax=200), Category=Generator)
-	uint8 NormalHeight = 14;
+	uint8 NormalHeight = 20;
 
 	void Generate();
 

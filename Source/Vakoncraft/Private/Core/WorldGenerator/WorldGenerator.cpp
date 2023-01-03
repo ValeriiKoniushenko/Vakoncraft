@@ -64,9 +64,26 @@ void AWorldGenerator::Generate()
 					Y += NormalHeight;
 
 					Chunks[i][j].Data[z][Y][x].Type = Block::EType::Grass;
-					Chunks[i][j].Data[z][Y - 1][x].Type = Block::EType::Dirt;
-					Chunks[i][j].Data[z][Y - 2][x].Type = Block::EType::Stone;
-					Chunks[i][j].Data[z][Y - 3][x].Type = Block::EType::Bedrock;
+
+					float Temp = Y;
+					const float DirtHeight = FMath::RandRange(1,4);
+					const float BedrockHeight = FMath::RandRange(1,3);
+					const float StoneHeight = Temp - DirtHeight - BedrockHeight - 1;
+					
+					for (int32 k = 0; k < DirtHeight; ++k)
+					{
+						Chunks[i][j].Data[z][--Temp][x].Type = Block::EType::Dirt;
+					}
+
+					for (int32 k = 0; k < StoneHeight; ++k)
+					{
+						Chunks[i][j].Data[z][--Temp][x].Type = Block::EType::Stone;
+					}
+
+					for (int32 k = 0; k < BedrockHeight; ++k)
+					{
+						Chunks[i][j].Data[z][--Temp][x].Type = Block::EType::Bedrock;
+					}
 				}
 			}
 		}
