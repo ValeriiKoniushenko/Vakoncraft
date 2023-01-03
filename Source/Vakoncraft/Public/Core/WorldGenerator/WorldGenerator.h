@@ -82,4 +82,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UInstancedStaticMeshComponent* Stone;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInstancedStaticMeshComponent* Bedrock;
 };

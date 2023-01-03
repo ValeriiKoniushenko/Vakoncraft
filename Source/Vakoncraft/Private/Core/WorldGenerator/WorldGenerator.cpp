@@ -40,6 +40,7 @@ AWorldGenerator::AWorldGenerator()
 	CREATE_BLOCK_MODEL(Grass);
 	CREATE_BLOCK_MODEL(Dirt);
 	CREATE_BLOCK_MODEL(Stone);
+	CREATE_BLOCK_MODEL(Bedrock);
 }
 
 void AWorldGenerator::Generate()
@@ -65,6 +66,7 @@ void AWorldGenerator::Generate()
 					Chunks[i][j].Data[z][Y][x].Type = Block::EType::Grass;
 					Chunks[i][j].Data[z][Y - 1][x].Type = Block::EType::Dirt;
 					Chunks[i][j].Data[z][Y - 2][x].Type = Block::EType::Stone;
+					Chunks[i][j].Data[z][Y - 3][x].Type = Block::EType::Bedrock;
 				}
 			}
 		}
@@ -136,6 +138,8 @@ int32 AWorldGenerator::AddBlockInstance(Block::EType Type, const FTransform& Tra
 		return Dirt->AddInstance(Transform);
 	case Block::EType::Stone:
 		return Stone->AddInstance(Transform);
+	case Block::EType::Bedrock:
+		return Bedrock->AddInstance(Transform);
 	}
 	return 0;
 }
