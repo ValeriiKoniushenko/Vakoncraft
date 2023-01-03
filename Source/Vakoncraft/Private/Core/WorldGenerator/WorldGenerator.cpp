@@ -57,8 +57,8 @@ void AWorldGenerator::Generate()
 			{
 				for (int32 x = 0; x < Chunk::Width; ++x)
 				{
-					float Y = db::perlin(static_cast<float>(x + Chunk::Width * j) / Size.X,
-					                     static_cast<float>(z + Chunk::Width * i) / Size.Y) * Amplitude;
+					float Y = db::perlin(static_cast<float>(x + Chunk::Width * j) / SubAmplitude,
+					                     static_cast<float>(z + Chunk::Width * i) / SubAmplitude) * Amplitude;
 					Y /= BlockSize;
 					Y = FMath::Floor(Y);
 					Y += NormalHeight;
@@ -66,24 +66,25 @@ void AWorldGenerator::Generate()
 					Chunks[i][j].Data[z][Y][x].Type = Block::EType::Grass;
 
 					float Temp = Y;
-					const float DirtHeight = FMath::RandRange(1,4);
-					const float BedrockHeight = FMath::RandRange(1,3);
+					const float DirtHeight = FMath::RandRange(1, 4);
+					const float BedrockHeight = FMath::RandRange(1, 3);
 					const float StoneHeight = Temp - DirtHeight - BedrockHeight - 1;
-					
-					for (int32 k = 0; k < DirtHeight; ++k)
+
+					for (int32 k = 0; k < DirtHeight && Temp - 1 >= 0; ++k)
 					{
 						Chunks[i][j].Data[z][--Temp][x].Type = Block::EType::Dirt;
 					}
 
-					for (int32 k = 0; k < StoneHeight; ++k)
+					for (int32 k = 0; k < StoneHeight && Temp - 1 >= 0; ++k)
 					{
 						Chunks[i][j].Data[z][--Temp][x].Type = Block::EType::Stone;
 					}
 
-					for (int32 k = 0; k < BedrockHeight; ++k)
+					for (int32 k = 0; k < BedrockHeight && Temp - 1 >= 0; ++k)
 					{
 						Chunks[i][j].Data[z][--Temp][x].Type = Block::EType::Bedrock;
 					}
+					Chunks[i][j].Data[z][0][x].Type = Block::EType::Bedrock;
 				}
 			}
 		}
