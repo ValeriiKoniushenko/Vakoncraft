@@ -46,9 +46,7 @@ AWorldGenerator::AWorldGenerator()
 void AWorldGenerator::Generate()
 {
 	SetupChunksPositions();
-
-	const FVector2D Size(CountOfChunksX * Chunk::Width, CountOfChunksY * Chunk::Width);
-
+	
 	for (int32 i = 0; i < CountOfChunksY; ++i)
 	{
 		for (int32 j = 0; j < CountOfChunksX; ++j)
