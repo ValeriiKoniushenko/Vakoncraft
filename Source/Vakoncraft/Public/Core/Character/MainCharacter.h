@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
+class USpringArmComponent;
+
 UCLASS()
 class VAKONCRAFT_API AMainCharacter : public ACharacter
 {
@@ -13,6 +15,9 @@ class VAKONCRAFT_API AMainCharacter : public ACharacter
 
 public:
 	AMainCharacter();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+	USpringArmComponent* SpringArmComponent;
 
 protected:
 	virtual void BeginPlay() override;

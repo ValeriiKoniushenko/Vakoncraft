@@ -5,11 +5,32 @@
 
 #include "Core/Character/MainPlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 AMainCharacter::AMainCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	//========Creating=========
+	//	SpringArmComponent:
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+	check(SpringArmComponent);
+	SpringArmComponent->TargetArmLength = 0.f;
+	SpringArmComponent->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
+	SpringArmComponent->bUsePawnControlRotation = true;
+	SpringArmComponent->AttachTo(RootComponent);
+
+	//	Camera:
+	UCameraComponent* CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	check(CameraComponent);
+	CameraComponent->AttachTo(SpringArmComponent, USpringArmComponent::SocketName);
+	CameraComponent->FieldOfView = 120.f;
+	CameraComponent->bUsePawnControlRotation = false;
+	CameraComponent->Activate();
+
+	//========Setup=========
+	//	Movement Component:
 	UCharacterMovementComponent* CurrentMovementComponent = GetCharacterMovement();
 	check(CurrentMovementComponent);
 	CurrentMovementComponent->AirControl = 0.7f;
