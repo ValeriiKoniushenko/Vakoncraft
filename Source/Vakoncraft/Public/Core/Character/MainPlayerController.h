@@ -20,4 +20,5 @@ public:
 	void LookAround(float Value);
 	void LookUp(float Value);
 	void Jump();
+	void LeftMouseAction();
 };

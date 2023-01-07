@@ -4,6 +4,7 @@
 #include "Core/Character/MainPlayerController.h"
 
 #include "GameFramework/Character.h"
+#include "Core/Character/MainCharacter.h"
 
 void AMainPlayerController::MoveForward(float Value)
 {
@@ -38,4 +39,11 @@ void AMainPlayerController::Jump()
 	ACharacter* CurrentCharacter = GetCharacter();
 	check(CurrentCharacter);
 	CurrentCharacter->Jump();
+}
+
+void AMainPlayerController::LeftMouseAction()
+{
+	AMainCharacter* CurrentCharacter = Cast<AMainCharacter>(GetCharacter());
+	check(CurrentCharacter);
+	CurrentCharacter->LeftMouseAction();
 }

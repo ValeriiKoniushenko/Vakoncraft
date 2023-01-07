@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "DrawDebugHelpers.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -22,7 +23,7 @@ AMainCharacter::AMainCharacter()
 	SpringArmComponent->AttachToComponent(RootComponent, {EAttachmentRule::KeepRelative, false});
 
 	//	Camera:
-	UCameraComponent* CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	check(CameraComponent);
 	CameraComponent->AttachToComponent(SpringArmComponent, {EAttachmentRule::KeepRelative, false},
 	                                   USpringArmComponent::SocketName);
@@ -34,13 +35,31 @@ AMainCharacter::AMainCharacter()
 	//	Movement Component:
 	UCharacterMovementComponent* CurrentMovementComponent = GetCharacterMovement();
 	check(CurrentMovementComponent);
-	CurrentMovementComponent->AirControl = 0.7f;
+	CurrentMovementComponent->AirControl = 0.5f;
 	CurrentMovementComponent->JumpZVelocity = 480.f;
 }
 
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AMainCharacter::LeftMouseAction()
+{
+	FHitResult Hit;
+
+	FVector TraceStart = SpringArmComponent->GetRelativeLocation() + GetActorLocation();
+	FVector TraceEnd = SpringArmComponent->GetRelativeLocation() + GetActorLocation() + CameraComponent->GetForwardVector() * 1000.0f;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_WorldStatic, QueryParams);
+
+	// You can use DrawDebug helpers and the log to help visualize and debug your trace queries.
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, Hit.bBlockingHit ? FColor::Blue : FColor::Red, false, 5.0f, 0,
+	              10.0f);
+	UE_LOG(LogTemp, Log, TEXT("Tracing line: %s to %s"), *TraceStart.ToCompactString(), *TraceEnd.ToCompactString());
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -60,4 +79,5 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* Input)
 	Input->BindAxis("LookAround", CurrentController, &AMainPlayerController::LookAround);
 	Input->BindAxis("LookUp", CurrentController, &AMainPlayerController::LookUp);
 	Input->BindAction("Jump", IE_Pressed, CurrentController, &AMainPlayerController::Jump);
+	Input->BindAction("LeftMouseAction", IE_Pressed, CurrentController, &AMainPlayerController::LeftMouseAction);
 }
