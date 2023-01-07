@@ -19,12 +19,13 @@ AMainCharacter::AMainCharacter()
 	SpringArmComponent->TargetArmLength = 0.f;
 	SpringArmComponent->SetRelativeLocation(FVector(0.f, 0.f, 80.f));
 	SpringArmComponent->bUsePawnControlRotation = true;
-	SpringArmComponent->AttachTo(RootComponent);
+	SpringArmComponent->AttachToComponent(RootComponent, {EAttachmentRule::KeepRelative, false});
 
 	//	Camera:
 	UCameraComponent* CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	check(CameraComponent);
-	CameraComponent->AttachTo(SpringArmComponent, USpringArmComponent::SocketName);
+	CameraComponent->AttachToComponent(SpringArmComponent, {EAttachmentRule::KeepRelative, false},
+	                                   USpringArmComponent::SocketName);
 	CameraComponent->FieldOfView = 120.f;
 	CameraComponent->bUsePawnControlRotation = false;
 	CameraComponent->Activate();
