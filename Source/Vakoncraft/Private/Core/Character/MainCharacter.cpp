@@ -4,10 +4,16 @@
 #include "Core/Character/MainCharacter.h"
 
 #include "Core/Character/MainPlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AMainCharacter::AMainCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	UCharacterMovementComponent* CurrentMovementComponent = GetCharacterMovement();
+	check(CurrentMovementComponent);
+	CurrentMovementComponent->AirControl = 0.7f;
+	CurrentMovementComponent->JumpZVelocity = 480.f;
 }
 
 void AMainCharacter::BeginPlay()
