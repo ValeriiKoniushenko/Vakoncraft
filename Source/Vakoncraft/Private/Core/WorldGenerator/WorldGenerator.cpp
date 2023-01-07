@@ -5,6 +5,7 @@
 
 #include "Core/WorldGenerator/Perlin.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Templates/SharedPointer.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4996)
@@ -32,6 +33,16 @@ Chunk::Chunk()
 	}
 }
 
+AWorldGenerator* AWorldGenerator::GetInstance()
+{
+	static TSharedPtr<AWorldGenerator> Obj;
+	if (!Obj)
+	{
+		Obj = MakeShareable(NewObject<AWorldGenerator>());
+	}
+
+	return Obj.Get();
+}
 
 AWorldGenerator::AWorldGenerator()
 {
@@ -43,10 +54,19 @@ AWorldGenerator::AWorldGenerator()
 	CREATE_BLOCK_MODEL(Bedrock);
 }
 
+FVector AWorldGenerator::GetActorSpawnPlace() const
+{
+	return {
+		CountOfChunksX * Chunk::Width / 2.f,
+		CountOfChunksY * Chunk::Width / 2.f,
+		4000.f
+	};
+}
+
 void AWorldGenerator::Generate()
 {
 	SetupChunksPositions();
-	
+
 	for (int32 i = 0; i < CountOfChunksY; ++i)
 	{
 		for (int32 j = 0; j < CountOfChunksX; ++j)

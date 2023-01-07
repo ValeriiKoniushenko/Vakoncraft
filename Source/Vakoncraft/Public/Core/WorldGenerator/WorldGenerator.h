@@ -39,8 +39,6 @@ class VAKONCRAFT_API AWorldGenerator : public AActor
 	GENERATED_BODY()
 
 public:
-	AWorldGenerator();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
 	int32 CountOfChunksX = 5;
 
@@ -67,6 +65,9 @@ public:
 
 	void Generate();
 
+	FVector GetActorSpawnPlace() const;
+	static AWorldGenerator* GetInstance();
+
 protected:
 	virtual void BeginPlay() override;
 	void RedrawMap();
@@ -88,4 +89,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UInstancedStaticMeshComponent* Bedrock;
+
+private:
+	AWorldGenerator();
 };
