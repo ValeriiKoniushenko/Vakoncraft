@@ -13,5 +13,11 @@ UCLASS()
 class VAKONCRAFT_API AMainPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
+public:
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void LookAround(float Value);
+	void LookUp(float Value);
+	void Jump();
 };
