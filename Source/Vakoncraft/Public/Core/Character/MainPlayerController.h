@@ -21,4 +21,5 @@ public:
 	void LookUp(float Value);
 	void Jump();
 	void LeftMouseAction();
+	void RightMouseAction();
 };

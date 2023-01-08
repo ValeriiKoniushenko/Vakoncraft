@@ -47,3 +47,10 @@ void AMainPlayerController::LeftMouseAction()
 	check(CurrentCharacter);
 	CurrentCharacter->LeftMouseAction();
 }
+
+void AMainPlayerController::RightMouseAction()
+{
+	AMainCharacter* CurrentCharacter = Cast<AMainCharacter>(GetCharacter());
+	check(CurrentCharacter);
+	CurrentCharacter->RightMouseAction();
+}

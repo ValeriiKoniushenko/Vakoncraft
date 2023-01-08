@@ -63,6 +63,12 @@ FVector AWorldGenerator::GetActorSpawnPlace() const
 	};
 }
 
+void AWorldGenerator::SpawnBlock(Block::EType Type, const FTransform& Transform)
+{
+	// Chunks[i][j].Data[z][y][x].InstanceIndex =
+	AddBlockInstance(Type, Transform);
+}
+
 void AWorldGenerator::Generate()
 {
 	SetupChunksPositions();

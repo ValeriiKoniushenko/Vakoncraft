@@ -40,10 +40,10 @@ class VAKONCRAFT_API AWorldGenerator : public AActor
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
-	int32 CountOfChunksX = 5;
+	int32 CountOfChunksX = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
-	int32 CountOfChunksY = 5;
+	int32 CountOfChunksY = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
 	float Amplitude = 500.f;
@@ -63,11 +63,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(ClampMin=3, UIMin=3, ClampMax=200, UIMax=200), Category=Generator)
 	uint8 NormalHeight = 20;
 
+	static AWorldGenerator* GetInstance();
+
 	void Generate();
 
 	FVector GetActorSpawnPlace() const;
-	static AWorldGenerator* GetInstance();
 
+	void SpawnBlock(Block::EType Type, const FTransform& Transform);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInstancedStaticMeshComponent* Stone;
+	
 protected:
 	virtual void BeginPlay() override;
 	void RedrawMap();
@@ -84,8 +89,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UInstancedStaticMeshComponent* Dirt;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UInstancedStaticMeshComponent* Stone;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UInstancedStaticMeshComponent* Bedrock;
