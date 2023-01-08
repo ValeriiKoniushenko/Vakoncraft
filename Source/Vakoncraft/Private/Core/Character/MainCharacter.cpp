@@ -89,7 +89,9 @@ void AMainCharacter::RightMouseAction()
 	if (Hit.bBlockingHit)
 	{
 		FTransform Transform;
-		Transform.SetLocation(Hit.ImpactPoint);
+		FVector Normal = Hit.Normal * 10;
+		Normal.Z *= -1.f;
+		Transform.SetLocation(Hit.ImpactPoint + Normal);
 		WorldGenerator->SpawnBlock(Block::EType::Stone, Transform);
 	}
 }
