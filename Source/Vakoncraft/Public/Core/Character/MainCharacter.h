@@ -10,6 +10,7 @@ class AWorldGenerator;
 class UCameraComponent;
 class USpringArmComponent;
 class USpringArmComponent;
+class UMasterWidget;
 
 UCLASS()
 class VAKONCRAFT_API AMainCharacter : public ACharacter
@@ -18,6 +19,12 @@ class VAKONCRAFT_API AMainCharacter : public ACharacter
 
 public:
 	AMainCharacter();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=HUD)
+	TSubclassOf<UMasterWidget> MasterWidgetClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=BlockGrabber)
+	float ArmLength = 600.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	UCameraComponent* CameraComponent;
@@ -30,15 +37,17 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	AWorldGenerator* WorldGenerator;
-	
+
 	UFUNCTION(BlueprintCallable)
 	virtual void LeftMouseAction();
 	virtual void RightMouseAction();
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* Input) override;
 
 protected:
 	virtual void BeginPlay() override;
 	FHitResult LineTraceFromCamera() const;
-public:
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* Input) override;
+
+protected:
+	UMasterWidget* MasterWidget;
 };

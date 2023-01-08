@@ -7,9 +7,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "DrawDebugHelpers.h"
 #include "Core/WorldGenerator/WorldGenerator.h"
 #include "Kismet/GameplayStatics.h"
+#include "Core/HUD/MasterWidget.h"
 
 AMainCharacter::AMainCharacter()
 {
@@ -45,8 +45,19 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//========Creating=========
+	//	Master Widget
+	if (IsLocallyControlled() && MasterWidgetClass)
+	{
+		AMainPlayerController* CurrentController = GetController<AMainPlayerController>();
+		check(CurrentController);
+		MasterWidget = CreateWidget<UMasterWidget>(CurrentController, MasterWidgetClass);
+		check(MasterWidget);
+		MasterWidget->AddToViewport(1);
+	}
+
 	//========Setup=========
-	//	WorldGenerator:
+	//	World Generator:
 	check(WorldGeneratorClass);
 	AActor* WhatFound = UGameplayStatics::GetActorOfClass(GetWorld(), WorldGeneratorClass);
 	check(WhatFound);
@@ -60,7 +71,7 @@ FHitResult AMainCharacter::LineTraceFromCamera() const
 
 	FVector TraceStart = SpringArmComponent->GetRelativeLocation() + GetActorLocation();
 	FVector TraceEnd = SpringArmComponent->GetRelativeLocation() + GetActorLocation() + CameraComponent->
-		GetForwardVector() * 1000.0f;
+		GetForwardVector() * ArmLength;
 
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActor(this);
@@ -85,7 +96,7 @@ void AMainCharacter::LeftMouseAction()
 void AMainCharacter::RightMouseAction()
 {
 	FHitResult Hit = LineTraceFromCamera();
-	
+
 	if (Hit.bBlockingHit)
 	{
 		FTransform Transform;
