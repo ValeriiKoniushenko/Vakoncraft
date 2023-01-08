@@ -21,7 +21,6 @@ struct Block
 	};
 
 	EType Type = EType::None;
-	int32 InstanceIndex = {};
 };
 
 struct Chunk

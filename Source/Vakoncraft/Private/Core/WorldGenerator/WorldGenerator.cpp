@@ -156,7 +156,7 @@ void AWorldGenerator::RedrawOneChunk(int32 i, int32 j)
 					y * BlockSize
 				));
 
-				Chunks[i][j].Data[z][y][x].InstanceIndex = AddBlockInstance(Chunks[i][j].Data[z][y][x].Type, Transform);
+				AddBlockInstance(Chunks[i][j].Data[z][y][x].Type, Transform);
 			}
 		}
 	}
