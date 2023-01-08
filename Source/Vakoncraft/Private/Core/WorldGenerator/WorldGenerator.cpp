@@ -46,11 +46,31 @@ AWorldGenerator::AWorldGenerator()
 
 FVector AWorldGenerator::GetActorSpawnPlace() const
 {
-	return {
+	FVector Place = {
 		CountOfChunksX * Chunk::Width / 2.f,
 		CountOfChunksY * Chunk::Width / 2.f,
-		4000.f
+		0.f
 	};
+
+	FVector2D ChunkIndex = {Place.X, Place.Y};
+	ChunkIndex /= Chunk::Width;
+	ChunkIndex = {FMath::Floor(ChunkIndex.X), FMath::Floor(ChunkIndex.Y)};
+
+	FVector PositionInChunk = Place;
+	PositionInChunk.X -= ChunkIndex.X * Chunk::Width;
+	PositionInChunk.Y -= ChunkIndex.Y * Chunk::Width;
+
+	for (int32 i = 0; i < Chunk::Height; ++i)
+	{
+		const Block& B = Chunks[ChunkIndex.Y][ChunkIndex.X].Data[PositionInChunk.Y][i][PositionInChunk.X];
+		if (B.Type == Block::EType::None)
+		{
+			Place.Z = i + 1;
+			break;
+		}
+	}
+
+	return Place * BlockSize;
 }
 
 void AWorldGenerator::SpawnBlock(Block::EType Type, const FTransform& Transform)

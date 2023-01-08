@@ -41,10 +41,10 @@ public:
 	AWorldGenerator();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
-	int32 CountOfChunksX = 1;
+	int32 CountOfChunksX = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
-	int32 CountOfChunksY = 1;
+	int32 CountOfChunksY = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Generator)
 	float Amplitude = 500.f;

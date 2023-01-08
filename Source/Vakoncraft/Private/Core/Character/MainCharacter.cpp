@@ -37,7 +37,7 @@ AMainCharacter::AMainCharacter()
 	//	Movement Component:
 	UCharacterMovementComponent* CurrentMovementComponent = GetCharacterMovement();
 	check(CurrentMovementComponent);
-	CurrentMovementComponent->AirControl = 0.5f;
+	CurrentMovementComponent->AirControl = 0.3f;
 	CurrentMovementComponent->JumpZVelocity = 480.f;
 }
 
@@ -63,6 +63,8 @@ void AMainCharacter::BeginPlay()
 	check(WhatFound);
 	WorldGenerator = Cast<AWorldGenerator>(WhatFound);
 	check(WorldGenerator);
+
+	SetActorLocation(WorldGenerator->GetActorSpawnPlace());
 }
 
 FHitResult AMainCharacter::LineTraceFromCamera() const
