@@ -15,6 +15,7 @@
 	check(Block); \
 	Block->SetMobility(EComponentMobility::Static); \
 	Block->SetCollisionProfileName("Block All"); \
+	Block->Mobility = EComponentMobility::Movable; \
 	SetRootComponent(Block);
 
 const uint8 Chunk::Width = 16u;
@@ -61,16 +62,15 @@ void AWorldGenerator::SpawnBlock(Block::EType Type, const FTransform& Transform)
 	Location.X /= BlockSize;
 	Location.X = FMath::RoundToFloat(Location.X);
 	Location.X *= BlockSize;
-	
+
 	Location.Y /= BlockSize;
 	Location.Y = FMath::RoundToFloat(Location.Y);
 	Location.Y *= BlockSize;
-	
+
 	Location.Z /= BlockSize;
 	Location.Z = FMath::Floor(Location.Z);
 	Location.Z *= BlockSize;
-	Location.Z += BlockSize;
-	
+
 	FTransform Temp(Transform);
 	Temp.SetLocation(Location);
 	AddBlockInstance(Type, Temp);
@@ -125,6 +125,8 @@ void AWorldGenerator::Generate()
 void AWorldGenerator::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetActorLocation(FVector(0.f, 0.f, BlockSize / 2.f));
 
 	Generate();
 	RedrawMap();
