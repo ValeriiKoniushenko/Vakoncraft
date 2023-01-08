@@ -33,17 +33,6 @@ Chunk::Chunk()
 	}
 }
 
-AWorldGenerator* AWorldGenerator::GetInstance()
-{
-	static TSharedPtr<AWorldGenerator> Obj;
-	if (!Obj)
-	{
-		Obj = MakeShareable(NewObject<AWorldGenerator>());
-	}
-
-	return Obj.Get();
-}
-
 AWorldGenerator::AWorldGenerator()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -66,7 +55,25 @@ FVector AWorldGenerator::GetActorSpawnPlace() const
 void AWorldGenerator::SpawnBlock(Block::EType Type, const FTransform& Transform)
 {
 	// Chunks[i][j].Data[z][y][x].InstanceIndex =
-	AddBlockInstance(Type, Transform);
+	FVector Location = Transform.GetLocation();
+
+	//=====Snap to grid=====
+	Location.X /= BlockSize;
+	Location.X = FMath::RoundToFloat(Location.X);
+	Location.X *= BlockSize;
+	
+	Location.Y /= BlockSize;
+	Location.Y = FMath::RoundToFloat(Location.Y);
+	Location.Y *= BlockSize;
+	
+	Location.Z /= BlockSize;
+	Location.Z = FMath::Floor(Location.Z);
+	Location.Z *= BlockSize;
+	Location.Z += BlockSize;
+	
+	FTransform Temp(Transform);
+	Temp.SetLocation(Location);
+	AddBlockInstance(Type, Temp);
 }
 
 void AWorldGenerator::Generate()

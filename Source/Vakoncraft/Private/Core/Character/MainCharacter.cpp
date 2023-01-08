@@ -39,13 +39,12 @@ AMainCharacter::AMainCharacter()
 	check(CurrentMovementComponent);
 	CurrentMovementComponent->AirControl = 0.5f;
 	CurrentMovementComponent->JumpZVelocity = 480.f;
-
 }
 
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	//========Setup=========
 	//	WorldGenerator:
 	check(WorldGeneratorClass);
@@ -75,20 +74,24 @@ void AMainCharacter::LeftMouseAction()
 {
 	FHitResult Hit = LineTraceFromCamera();
 
-	DrawDebugLine(GetWorld(), Hit.TraceStart, Hit.TraceEnd, Hit.bBlockingHit ? FColor::Blue : FColor::Red, false, 5.0f, 0,
-	              10.0f);
+	if (Hit.bBlockingHit)
+	{
+		UInstancedStaticMeshComponent* InstancedMesh = Cast<UInstancedStaticMeshComponent>(Hit.GetComponent());
+		check(InstancedMesh);
+		InstancedMesh->RemoveInstance(Hit.Item);
+	}
 }
 
 void AMainCharacter::RightMouseAction()
 {
 	FHitResult Hit = LineTraceFromCamera();
-
-	DrawDebugLine(GetWorld(), Hit.TraceStart, Hit.TraceEnd, Hit.bBlockingHit ? FColor::Blue : FColor::Red, false, 5.0f, 0,
-				  10.0f);
-
+	
+	if (Hit.bBlockingHit)
+	{
 		FTransform Transform;
 		Transform.SetLocation(Hit.ImpactPoint);
-		WorldGenerator->Stone->AddInstance(Transform);
+		WorldGenerator->SpawnBlock(Block::EType::Stone, Transform);
+	}
 }
 
 void AMainCharacter::Tick(float DeltaTime)
