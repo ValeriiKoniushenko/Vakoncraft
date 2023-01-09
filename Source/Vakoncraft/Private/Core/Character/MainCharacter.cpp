@@ -64,6 +64,10 @@ void AMainCharacter::BeginPlay()
 	WorldGenerator = Cast<AWorldGenerator>(WhatFound);
 	check(WorldGenerator);
 
+	//	Master Widget:
+	MasterWidget->HighlightToolbarCell(0);
+
+	//	Actor:
 	SetActorLocation(WorldGenerator->GetActorSpawnPlace());
 }
 
@@ -81,6 +85,12 @@ FHitResult AMainCharacter::LineTraceFromCamera() const
 	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_WorldStatic, QueryParams);
 
 	return Hit;
+}
+
+void AMainCharacter::UpdateToolbarCellsHighlight()
+{
+	MasterWidget->UnHighlightAllToolbarCells();
+	MasterWidget->HighlightToolbarCell(ToolbarCellIndex);
 }
 
 void AMainCharacter::LeftMouseAction()
@@ -124,7 +134,19 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* Input)
 	Input->BindAxis("MoveRight", CurrentController, &AMainPlayerController::MoveRight);
 	Input->BindAxis("LookAround", CurrentController, &AMainPlayerController::LookAround);
 	Input->BindAxis("LookUp", CurrentController, &AMainPlayerController::LookUp);
+	Input->BindAxis("NextToolBarTool", CurrentController, &AMainPlayerController::NextToolBarTool);
 	Input->BindAction("Jump", IE_Pressed, CurrentController, &AMainPlayerController::Jump);
 	Input->BindAction("LeftMouseAction", IE_Pressed, CurrentController, &AMainPlayerController::LeftMouseAction);
 	Input->BindAction("RightMouseAction", IE_Pressed, CurrentController, &AMainPlayerController::RightMouseAction);
+}
+
+void AMainCharacter::NextToolBarTool(float Value)
+{
+	if (!FMath::IsNearlyZero(Value))
+	{
+		ToolbarCellIndex += Value;
+		ToolbarCellIndex = FMath::Clamp(ToolbarCellIndex, MinToolbarCellIndex, MaxToolbarCellIndex);
+
+		UpdateToolbarCellsHighlight();
+	}
 }

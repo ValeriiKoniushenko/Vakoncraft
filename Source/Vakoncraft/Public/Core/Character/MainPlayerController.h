@@ -22,4 +22,5 @@ public:
 	void Jump();
 	void LeftMouseAction();
 	void RightMouseAction();
+	void NextToolBarTool(float Value);
 };

@@ -7,6 +7,7 @@
 #include "MasterWidget.generated.h"
 
 class UImage;
+class UHorizontalBox;
 
 /**
  * 
@@ -17,4 +18,14 @@ class VAKONCRAFT_API UMasterWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	void HighlightToolbarCell(int32 Index);
+	void UnHighlightToolbarCell(int32 Index);
+	void UnHighlightAllToolbarCells();
+
+protected:
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	UHorizontalBox* ToolbarSelectedCells;
+
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	UHorizontalBox* ToolbarUnselectedCells;
 };

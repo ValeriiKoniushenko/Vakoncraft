@@ -54,3 +54,10 @@ void AMainPlayerController::RightMouseAction()
 	check(CurrentCharacter);
 	CurrentCharacter->RightMouseAction();
 }
+
+void AMainPlayerController::NextToolBarTool(float Value)
+{
+	AMainCharacter* CurrentCharacter = Cast<AMainCharacter>(GetCharacter());
+	check(CurrentCharacter);
+	CurrentCharacter->NextToolBarTool(Value);
+}

@@ -38,16 +38,27 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	AWorldGenerator* WorldGenerator;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Toolbar)
+	int32 MaxToolbarCellIndex = 8;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Toolbar)
+	int32 MinToolbarCellIndex = 0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Toolbar)
+	int32 ToolbarCellIndex = 0;
+	
 	UFUNCTION(BlueprintCallable)
 	virtual void LeftMouseAction();
 	virtual void RightMouseAction();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* Input) override;
+	virtual void NextToolBarTool(float Value);
 
 protected:
 	virtual void BeginPlay() override;
 	FHitResult LineTraceFromCamera() const;
-
+	void UpdateToolbarCellsHighlight();
+	
 protected:
 	UMasterWidget* MasterWidget;
 };
