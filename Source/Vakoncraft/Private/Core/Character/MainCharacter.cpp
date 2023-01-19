@@ -33,6 +33,10 @@ AMainCharacter::AMainCharacter()
 	CameraComponent->bUsePawnControlRotation = false;
 	CameraComponent->Activate();
 
+	//	Inventory:
+	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
+	Inventory->SetSize(1, 9);
+
 	//========Setup=========
 	//	Movement Component:
 	UCharacterMovementComponent* CurrentMovementComponent = GetCharacterMovement();

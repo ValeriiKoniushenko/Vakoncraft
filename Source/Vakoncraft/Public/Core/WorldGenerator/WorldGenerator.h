@@ -4,24 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Core/WorldGenerator/Block.h"
 #include "WorldGenerator.generated.h"
 
 class UInstancedStaticMeshComponent;
-
-
-struct Block
-{
-	enum class EType
-	{
-		None,
-		Dirt,
-		Grass,
-		Stone,
-		Bedrock
-	};
-
-	EType Type = EType::None;
-};
 
 struct Chunk
 {

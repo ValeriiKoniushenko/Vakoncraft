@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Core/Inventory/Inventory.h"
 #include "MainCharacter.generated.h"
 
 class AWorldGenerator;
@@ -20,6 +21,13 @@ class VAKONCRAFT_API AMainCharacter : public ACharacter
 public:
 	AMainCharacter();
 
+	virtual void LeftMouseAction();
+	virtual void RightMouseAction();
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* Input) override;
+	virtual void NextToolBarTool(float Value);
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=HUD)
 	TSubclassOf<UMasterWidget> MasterWidgetClass;
 
@@ -40,25 +48,21 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Toolbar)
 	int32 MaxToolbarCellIndex = 8;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Toolbar)
 	int32 MinToolbarCellIndex = 0;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Toolbar)
 	int32 ToolbarCellIndex = 0;
-	
-	UFUNCTION(BlueprintCallable)
-	virtual void LeftMouseAction();
-	virtual void RightMouseAction();
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* Input) override;
-	virtual void NextToolBarTool(float Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Toolbar)
+	UInventory* Inventory;
 
 protected:
 	virtual void BeginPlay() override;
 	FHitResult LineTraceFromCamera() const;
 	void UpdateToolbarCellsHighlight();
-	
+
 protected:
 	UMasterWidget* MasterWidget;
 };
